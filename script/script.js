@@ -44,13 +44,13 @@ let getStatusIncome = (status) => {
 money = prompt('Ваш месячный доход?');
 addExpenses = prompt('Перечислите возможные расходы за расчитываемый период, через запятую.');
 deposit = confirm('Есть ли у вас депозит?');
-expenses1 = confirm('Введите обязательную статью расхода?');
 
+expenses1 = prompt('Введите обязательную статью расхода?');
 if(expenses1){
     amount1 = Number(prompt('Во сколько это обойдетя?'));
 }
 
-expenses2 = confirm('Введите обязательную статью расхода?');
+expenses2 = prompt('Введите обязательную статью расхода?');
 if(expenses2){
     amount2 = Number(prompt('Во сколько это обойдетя?'));
 }
