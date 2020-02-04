@@ -1,6 +1,40 @@
 'use strict';
 
-let isNumber = (n) => {
+
+const 
+    salaryAmount = document.querySelector('.salary-amount'),
+
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    btnPlusIncome = document.getElementsByTagName('button')[0],
+    
+    addIncomeItem1 = document.querySelectorAll('.additional_income-item')[0],
+    addIncomeItem2 = document.querySelectorAll('.additional_income-item')[1],
+
+    expensesTitle = document.querySelector('.expenses-title'),
+    expensesAmount = document.querySelector('.expenses-amount'),
+    btnPlusExpenses = document.getElementsByTagName('button')[1],
+
+    addExpensesItem = document.querySelector('additional_expenses-item'),
+    checkBoxDeposit = document.querySelector('#deposit-check'),
+
+    targetAmount = document.querySelector('target-amount'),
+
+    period = document.querySelector('period-select'),
+
+    resBudgetMonth = document.querySelector('.result-total budget_month-value'),
+    resBudgetDay = document.querySelector('.result-total budget_day-value'),
+    resExpensesMonth = document.querySelector('.result-total expenses_month-value'),
+    resAddIncome = document.querySelecrot('.result-total additional_income-value'),
+    resAddExpenses = document.querySelector('.result-total additional_expenses-value'),
+    resIncomePeriod = document.querySecletor('.result-total income_period-value'),
+    restTargetMonth = document.querySelector('.result-total target_month-value'),
+
+buttonId = document.getElementById('start');
+
+
+
+/*let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n) && n > 0;
 };
 
@@ -94,9 +128,9 @@ let appData = {
         appData.getTargetMonth();
         appData.getStatusIncome(appData.budgetDay);
 
-        /*for(let key in appData){
+        for(let key in appData){
             console.log('Программа включает: ' + key + ': ' + appData[key]);
-        }*/
+        }
     },
 
     getExpensesMonth: () => {
@@ -147,4 +181,4 @@ let appData = {
 appData.asking();
 
 appData.getInfoDeposit();
-console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
+console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());*/
