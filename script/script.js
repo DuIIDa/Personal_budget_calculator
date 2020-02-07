@@ -4,13 +4,15 @@
 let 
     salaryAmount = document.querySelector('.salary-amount'),
 
-    incomeTitle = document.querySelector('.income-title'),
+    incomeTitle = document.querySelectorAll('.income-title')[1],
+    incomeAmount = document.querySelector('.income-amount'),
     incomeItems = document.querySelectorAll('.income-items'),
     btnPlusIncome = document.getElementsByTagName('button')[0],
     
     addIncomeItem = document.querySelectorAll('.additional_income-item'),
 
-    expensesTitle = document.querySelector('.expenses-title'),
+    expensesTitle = document.querySelectorAll('.expenses-title')[1],
+    expensesAmount = document.querySelector('.expenses-amount'),
     expensesItems = document.querySelectorAll('.expenses-items'),
     btnPlusExpenses = document.getElementsByTagName('button')[1],
 
@@ -83,6 +85,8 @@ let appData = {
 
     addIncomeBlock: () => {
         let cloneIncomeItem = incomeItems[0].cloneNode(true);
+        cloneIncomeItem.children[0].value = '';
+        cloneIncomeItem.children[1].value = '';
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnPlusIncome);
         incomeItems = document.querySelectorAll('.income-items');
         if(incomeItems.length === 3) {
@@ -92,6 +96,8 @@ let appData = {
 
     addExpensesBlock: () => {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
+        cloneExpensesItem.children[0].value = '';
+        cloneExpensesItem.children[1].value = '';
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnPlusExpenses);
         expensesItems = document.querySelectorAll('.expenses-items');
         if(expensesItems.length === 3){
@@ -195,17 +201,41 @@ let appData = {
 
 };
 
-const onSubmit = ()=> {
-    if(!salaryAmount.value){
-        salaryAmount.focus();
-        alert('Запоните поле "Месячный доход"!');
-    }else{
-        appData.start();
-    }
+const provNumber = (value) => {
+    value.value = value.value.replace(/[^\d]/g, '');
 };
 
+const provText = (value) => {
+    value.value = value.value.replace(/[^а-яА-ЯёЁ ,\-]/g, '');
+};
 
-start.addEventListener('click', onSubmit); 
+const lock = () => {
+    start.disabled = !salaryAmount.value ? true : false;
+    provNumber(salaryAmount);
+};
+
+lock();
+
+
+start.addEventListener('click', appData.start); 
+salaryAmount.addEventListener('input', lock);
+
+
+incomeAmount.addEventListener('input', () => {
+    provNumber(incomeAmount);
+});
+
+incomeTitle.addEventListener('input', () => {
+    provText(incomeTitle);
+});
+
+expensesTitle.addEventListener('input', () => {
+    provText(expensesTitle);
+});
+
+expensesAmount.addEventListener('input', () => {
+    provNumber(expensesAmount);
+});
 
 btnPlusExpenses.addEventListener('click', appData.addExpensesBlock);
 btnPlusIncome.addEventListener('click', appData.addIncomeBlock);
