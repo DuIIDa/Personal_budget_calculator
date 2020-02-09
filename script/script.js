@@ -114,15 +114,26 @@ let appData = {
         period.value = 1;
         periodAmount.innerHTML = period.value;
 
-        expensesItems.forEach( (item) => {
-            item.querySelector('.expenses-title').style.display = 'none';
-            item.querySelector('.expenses-amount').style.display = 'none'; 
+        expensesItems.forEach( (item, i) => {
+            item.querySelector('.expenses-title').value =  '';
+            item.querySelector('.expenses-amount').value =  ''; 
+            if(i>0){
+               item.remove();
+            }
         });
+        expensesItems = document.querySelectorAll('.expenses-items');
+        btnPlusExpenses.style.display = 'block'; 
+    
 
-        incomeItems.forEach( (item) => {
+        incomeItems.forEach( (item, i) => {
            item.querySelector('.income-title').value =  '';
-           item.querySelector('.income-amount').value =  ''; 
+           item.querySelector('.income-amount').value =  '';
+           if(i>0){
+              item.remove();
+           } 
         });
+        incomeItems = document.querySelectorAll('.income-items');
+        btnPlusIncome.style.display = 'block';
 
         resBudgetMonth.value  =  '';
         resBudgetDay.value  =  '';
@@ -292,12 +303,12 @@ const lock = () => {
     provNumber(salaryAmount);
 };
 
-lock();
 
 reset.addEventListener('click', () => {
     start.style.display = 'block';
     reset.style.display = 'none';
     appData.reset();
+    lock();
 });
 
 
