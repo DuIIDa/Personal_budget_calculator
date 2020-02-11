@@ -4,15 +4,15 @@
 let 
     salaryAmount = document.querySelector('.salary-amount'),
 
-    incomeTitle = document.querySelectorAll('.income-title')[1],
-    incomeAmount = document.querySelector('.income-amount'),
+    incomeTitle = document.querySelectorAll('.income-title'),
+    incomeAmount = document.querySelectorAll('.income-amount'),
     incomeItems = document.querySelectorAll('.income-items'),
     btnPlusIncome = document.getElementsByTagName('button')[0],
     
     addIncomeItem = document.querySelectorAll('.additional_income-item'),
 
-    expensesTitle = document.querySelectorAll('.expenses-title')[1],
-    expensesAmount = document.querySelector('.expenses-amount'),
+    expensesTitle = document.querySelectorAll('.expenses-title'),
+    expensesAmount = document.querySelectorAll('.expenses-amount'),
     expensesItems = document.querySelectorAll('.expenses-items'),
     btnPlusExpenses = document.getElementsByTagName('button')[1],
 
@@ -37,6 +37,59 @@ start = document.getElementById('start');
 let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n) && n > 0;
 };
+
+const provNumber = (value) => {
+    value.value = value.value.replace(/[^\d]/g, '');
+};
+
+const provText = (value) => {
+    value.value = value.value.replace(/[^а-яА-ЯёЁ ,\-]/g, '');
+};
+
+const сheckIncomeAmount = () => {
+    incomeAmount = document.querySelectorAll('.income-amount');
+    incomeAmount.forEach(function(item) {
+        item.addEventListener('input', function(event) {
+            let target = event.target;
+            provNumber(target);
+    
+        });
+    });
+};
+
+const сheckIncomeTitle = () => {
+    incomeTitle = document.querySelectorAll('.income-title');
+    incomeTitle.forEach(function(item) {
+        item.addEventListener('input', function(event) {
+            let target = event.target;
+            provText(target);
+    
+        });
+    });
+};
+
+const сheckExpensesAmount = () => {
+    expensesAmount = document.querySelectorAll('.expenses-amount');
+    expensesAmount.forEach(function(item) {
+        item.addEventListener('input', function(event) {
+            let target = event.target;
+            provNumber(target);
+    
+        });
+    });
+};
+
+const сheckExpensesTitle = () => {
+    expensesTitle = document.querySelectorAll('.expenses-title');
+    expensesTitle.forEach(function(item) {
+        item.addEventListener('input', function(event) {
+            let target = event.target;
+            provText(target);
+    
+        });
+    });
+};
+
 
 let appData = {
     income: {},
@@ -178,6 +231,9 @@ let appData = {
         if(incomeItems.length === 3) {
             btnPlusIncome.style.display = 'none';
         }
+
+        сheckIncomeAmount();
+        сheckIncomeTitle();
     },
 
     addExpensesBlock:  function()  {
@@ -189,6 +245,9 @@ let appData = {
         if(expensesItems.length === 3){
             btnPlusExpenses.style.display = 'none'; 
         }
+
+        сheckExpensesAmount();
+        сheckExpensesTitle();
     },
 
     addPeriodAmount:  function()  {
@@ -290,14 +349,6 @@ let appData = {
 
 };
 
-const provNumber = (value) => {
-    value.value = value.value.replace(/[^\d]/g, '');
-};
-
-const provText = (value) => {
-    value.value = value.value.replace(/[^а-яА-ЯёЁ ,\-]/g, '');
-};
-
 const lock = () => {
     start.disabled = !salaryAmount.value ? true : false;
     provNumber(salaryAmount);
@@ -320,21 +371,24 @@ start.addEventListener('click', () => {
 
 salaryAmount.addEventListener('input', lock);
 
+сheckIncomeAmount();
 
-incomeAmount.addEventListener('input', function() {
-    provNumber(incomeAmount);
+сheckIncomeTitle();
+
+addIncomeItem[0].addEventListener('input', function() {
+    provText(addIncomeItem[0]);
 });
 
-incomeTitle.addEventListener('input', function() {
-    provText(incomeTitle);
+addIncomeItem[1].addEventListener('input', function() {
+    provText(addIncomeItem[1]);
 });
 
-expensesTitle.addEventListener('input', function() {
-    provText(expensesTitle);
-});
+сheckExpensesAmount();
 
-expensesAmount.addEventListener('input', function() {
-    provNumber(expensesAmount);
+сheckExpensesTitle();
+
+targetAmount.addEventListener('input', function() {
+    provNumber(targetAmount);
 });
 
 btnPlusExpenses.addEventListener('click', appData.addExpensesBlock);
