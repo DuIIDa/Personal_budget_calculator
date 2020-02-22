@@ -130,6 +130,7 @@ if(localStorage.getItem('localsaveAppData')){
 
     start.style.display = 'none';
     reset.style.display = 'block';
+    period.disabled = true;
 
     salaryAmount.readOnly = true;
     addIncomeItem[0].readOnly = true;
@@ -250,6 +251,7 @@ class AppData {
         depositBank.disabled = false;
         checkBoxDeposit.disabled = false;
         checkBoxDeposit.checked = false;
+        period.disabled = false;
     
         expensesItems.forEach( (item) => {
             item.querySelector('.expenses-title').readOnly = false;
