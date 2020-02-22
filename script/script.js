@@ -114,6 +114,7 @@ let saveAppData = {
     resAddExpensesSave: '',
     resIncomePeriodSave: '',
     restTargetMonthSave: '',
+    resperiod: '',
 };
 
 //Проверка имеются ли данные в локале
@@ -127,6 +128,8 @@ if(localStorage.getItem('localsaveAppData')){
     resAddExpenses.value = saveAppData.resAddExpensesSave;
     resIncomePeriod.value = saveAppData.resIncomePeriodSave;
     restTargetMonth.value = saveAppData.restTargetMonthSave;
+    period.value = saveAppData.resperiod;
+    periodAmount.innerHTML = period.value;
 
     start.style.display = 'none';
     reset.style.display = 'block';
@@ -185,6 +188,7 @@ class AppData {
         saveAppData.resAddExpensesSave = resAddExpenses.value;
         saveAppData.resIncomePeriodSave = resIncomePeriod.value;
         saveAppData.restTargetMonthSave = restTargetMonth.value;
+        saveAppData.resperiod = period.value;
 
         localStorage.setItem('localsaveAppData', JSON.stringify(saveAppData));
     }
