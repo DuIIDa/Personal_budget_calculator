@@ -2,24 +2,30 @@
 
 
 const 
+    //Месячный доход
     salaryAmount = document.querySelector('.salary-amount'),
 
+    //Кнопки +
     btnPlusIncome = document.getElementsByTagName('button')[0],
-    
     btnPlusExpenses = document.getElementsByTagName('button')[1],
 
+    //Возможные расходы
     addExpensesItem = document.querySelector('.additional_expenses-item'),
 
+    //Чекбокс депозт
     checkBoxDeposit = document.querySelector('#deposit-check'),
     depositBank = document.querySelector('.deposit-bank'),
     depositAmount = document.querySelector('.deposit-amount'),
     depositPercent = document.querySelector('.deposit-percent'),
 
+    //Цель
     targetAmount = document.querySelector('.target-amount'),
 
+    //Период
     period = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
 
+    //Результаты
     resBudgetMonth = document.querySelector('.budget_month-value'),
     resBudgetDay = document.querySelector('.budget_day-value'),
     resExpensesMonth = document.querySelector('.expenses_month-value'),
@@ -27,16 +33,19 @@ const
     resAddExpenses = document.querySelector('.additional_expenses-value'),
     resIncomePeriod = document.querySelector('.income_period-value'),
     restTargetMonth = document.querySelector('.target_month-value'),
+
+//Кнопки Расчитать и Сбросить
 reset = document.getElementById('cancel'),
 start = document.getElementById('start');
 
+//Дополнительные доходы
 let incomeTitle = document.querySelectorAll('.income-title'),
-incomeAmount = document.querySelectorAll('.income-amount'),
-incomeItems = document.querySelectorAll('.income-items'),
-addIncomeItem = document.querySelectorAll('.additional_income-item'),
-
-expensesTitle = document.querySelectorAll('.expenses-title'),
-expensesAmount = document.querySelectorAll('.expenses-amount'),
+    incomeAmount = document.querySelectorAll('.income-amount'),
+    incomeItems = document.querySelectorAll('.income-items'),
+    addIncomeItem = document.querySelectorAll('.additional_income-item'),
+//Обязательные расходы
+    expensesTitle = document.querySelectorAll('.expenses-title'),
+    expensesAmount = document.querySelectorAll('.expenses-amount'),
 expensesItems = document.querySelectorAll('.expenses-items');
 
 
@@ -97,21 +106,89 @@ const сheckExpensesTitle = () => {
     });
 };
 
+let saveAppData = {
+    resBudgetMonthSave: '',
+    resBudgetDaySave: '',
+    resExpensesMonthSave: '',
+    resAddIncomeSave: '',
+    resAddExpensesSave: '',
+    resIncomePeriodSave: '',
+    restTargetMonthSave: '',
+};
+
+//Проверка имеются ли данные в локале
+if(localStorage.getItem('localsaveAppData')){
+    saveAppData = JSON.parse(localStorage.getItem('localsaveAppData'));
+
+    resBudgetMonth.value = saveAppData.resBudgetMonthSave;
+    resBudgetDay.value = saveAppData.resBudgetDaySave;
+    resExpensesMonth.value = saveAppData.resExpensesMonthSave;
+    resAddIncome.value = saveAppData.resAddIncomeSave;
+    resAddExpenses.value = saveAppData.resAddExpensesSave;
+    resIncomePeriod.value = saveAppData.resIncomePeriodSave;
+    restTargetMonth.value = saveAppData.restTargetMonthSave;
+
+    start.style.display = 'none';
+    reset.style.display = 'block';
+
+    salaryAmount.readOnly = true;
+    addIncomeItem[0].readOnly = true;
+    addIncomeItem[1].readOnly = true;
+    addExpensesItem.readOnly = true;
+    targetAmount.readOnly = true;
+    depositPercent.readOnly = true;
+    depositAmount.readOnly = true;
+    depositBank.disabled = true;
+    checkBoxDeposit.disabled = true;
+    
+    expensesItems.forEach( (item) => {
+        item.querySelector('.expenses-title').readOnly = true;
+        item.querySelector('.expenses-amount').readOnly = true;  
+    });
+    
+    incomeItems.forEach( (item) => {
+        item.querySelector('.income-title').readOnly = true;
+        item.querySelector('.income-amount').readOnly = true; 
+    });
+
+    
+}
+
 class AppData {
     constructor(){
+        this.budget = 0;
         this.income = {};
         this.addIncome = [];
+
         this.expenses = {};
-        this.incomeMonth = 0;
         this.addExpenses = [];
+
         this.deposit = false;
-        this.percentDeposit = 0;
         this.moneyDeposit = 0;
-        this.budget = 0;
-        this.budgetDay =0;
+        this.percentDeposit = 0;
+
+        
         this.budgetMonth = 0;
+        this.budgetDay = 0;
         this.expensesMonth = 0;
+
+        this.incomeMonth = 0;
+        
     }
+
+    dataUpdateToLocalS() {
+        saveAppData.resBudgetMonthSave = resBudgetMonth.value;
+        saveAppData.resBudgetDaySave = resBudgetDay.value;
+        saveAppData.resExpensesMonthSave = resExpensesMonth.value;
+        saveAppData.resAddIncomeSave = resAddIncome.value;
+        saveAppData.resAddExpensesSave = resAddExpenses.value;
+        saveAppData.resIncomePeriodSave = resIncomePeriod.value;
+        saveAppData.restTargetMonthSave = restTargetMonth.value;
+
+        localStorage.setItem('localsaveAppData', JSON.stringify(saveAppData));
+    }
+
+
 
     start() {
 
@@ -136,6 +213,7 @@ class AppData {
         });
     
         this.budget = +salaryAmount.value;
+
     
         this.getExpenses();
         this.getIncome();
@@ -155,9 +233,13 @@ class AppData {
     
         this.showResult();
 
+
+        this.dataUpdateToLocalS();
     }
     
     reset() {
+        window.localStorage.clear();
+
         salaryAmount.readOnly = false;
         addIncomeItem[0].readOnly =false;
         addIncomeItem[1].readOnly = false;
@@ -367,7 +449,7 @@ class AppData {
             depositPercent.value = '';
             depositPercent.addEventListener('input', () => {
                 depositPercent.value = depositPercent.value.replace(/[^\d]/g, '');
-                if(depositPercent.value > 99 || depositPercent.value < 1){
+                if(depositPercent.value > 99){
                     depositPercent.value = '';
                 }
             });
@@ -391,6 +473,9 @@ class AppData {
             depositAmount.style.display = 'inline-block';
             this.deposit = true;
             depositBank.addEventListener('change', this.changePercent);
+            depositAmount.addEventListener('input', () => {
+                provNumber(depositAmount);
+            });
         }else{
             depositBank.style.display = 'none';  
             depositPercent.style.display = 'nane';         
@@ -411,6 +496,7 @@ class AppData {
     }
     
     eventListeners() {
+
         const lock = () => {
             start.disabled = !salaryAmount.value ? true : false;
             provNumber(salaryAmount);
@@ -461,7 +547,6 @@ class AppData {
         });
 
         checkBoxDeposit.addEventListener('change', this.depositHandler.bind(this));
-         
     }
 }
 
